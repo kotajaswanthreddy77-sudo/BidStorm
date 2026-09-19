@@ -51,8 +51,8 @@ export async function startServer() {
     console.log('[SERVER] Database connection established.');
 
     return new Promise<void>((resolve) => {
-      httpServer.listen(env.PORT, () => {
-        console.log(`[SERVER] BidStorm Backend listening on http://localhost:${env.PORT}`);
+      httpServer.listen(env.PORT, "0.0.0.0", () => {
+        console.log(`[SERVER] BidStorm Backend listening on port ${env.PORT}`);
         console.log(`[SERVER] Environment: ${env.NODE_ENV}`);
         resolve();
       });
