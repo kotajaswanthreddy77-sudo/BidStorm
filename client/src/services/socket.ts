@@ -21,18 +21,20 @@ export function getSocket(): Socket {
       // console.log('[SOCKET] Disconnected from real-time server');
       connectionListeners.forEach((fn) => fn(false));
     });
+
+    socketInstance.on('connect_error', () => {
+      // console.log('[SOCKET] Connection error to real-time server');
+      connectionListeners.forEach((fn) => fn(false));
+    });
   }
 
   return socketInstance;
 }
 
 export function subscribeConnectionStatus(callback: (connected: boolean) => void): () => void {
+  const socket = getSocket();
   connectionListeners.push(callback);
-  if (socketInstance) {
-    callback(socketInstance.connected);
-  } else {
-    callback(false);
-  }
+  callback(socket.connected);
 
   return () => {
     connectionListeners = connectionListeners.filter((fn) => fn !== callback);
